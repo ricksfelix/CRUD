@@ -16,49 +16,28 @@ def read():
     c.execute("""
     SELECT * FROM Dados
     """)
+    dados = ''
     for dados in c.fetchall():
         treeview.insert("", 0, text=dados[0], values=dados[1])
-    if dados != None:
-        return dados
-    else:
-        return dados
 
 def create():
-    global row
-    row = None
     name = et_name.get()
     num = et_num.get()
     if (name, num) == ('', ''):
-        lb_result['text'] = "Preencher o formulario"
+        lb_result['text'] = 'Prencha todos os Campos'
         lb_result['fg'] = 'red'
     else:
         if num == '':
-            lb_result['text'] = "Preencher o Numero"
+            lb_result['text'] = 'Prencha todos o Numero'
             lb_result['fg'] = 'red'
         else:
-            if read() == None:
-                lb_result['text'] = "Cadastrado com Sucesso!"
-                lb_result['fg'] = 'green'
-                c.execute("INSERT INTO Dados(nome, numero) VALUES(?,?)", (name, num))
-                con.commit()
-                treeview.insert("", 0, text=name, values=num)
-                et_name.delete(0, END)
-                et_num.delete(0, END)
-            else:
-                sql = 'SELECT * FROM Dados WHERE nome = ?'
-                for row in c.execute(sql, (name,)):
-                    print(row[0])
-                if row[0] == name:
-                    lb_result['text'] = "Ja Cadastrado!"
-                    lb_result['fg'] = 'red'
-                else:
-                    lb_result['text'] = "Cadastrado com Sucesso!"
-                    lb_result['fg'] = 'green'
-                    c.execute("INSERT INTO Dados(nome, numero) VALUES(?,?)", (name, num))
-                    con.commit()
-                    treeview.insert("", 0, text=name, values=num)
-                    et_name.delete(0, END)
-                    et_num.delete(0, END)
+            treeview.insert("", 0, text=name, values=num)
+            c.execute("""
+            INSERT INTO Dados(nome, numero) VALUES(?,?)
+            """, (name, num))
+            con.commit()
+
+
 
 def update():
     name = et_name.get()
@@ -119,3 +98,54 @@ bt_delet = Button(edit, text='Deletar', bg='red', fg='black', command=delete).gr
 gui.mainloop()
 
 #        treeview.insert("", 0, text="NOME", values=("NUMERO"))
+
+"""
+    global row
+    row = None
+    name = et_name.get()
+    num = et_num.get()
+    if (name, num) == ('', ''):
+        lb_result['text'] = "Preencher o formulario"
+        lb_result['fg'] = 'red'
+    else:
+        if num == '':
+            lb_result['text'] = "Preencher o Numero"
+            lb_result['fg'] = 'red'
+        else:
+            if read() == None:
+                lb_result['text'] = "Cadastrado com Sucesso!"
+                lb_result['fg'] = 'green'
+                c.execute("INSERT INTO Dados(nome, numero) VALUES(?,?)", (name, num))
+                con.commit()
+                treeview.insert("", 0, text=name, values=num)
+                et_name.delete(0, END)
+                et_num.delete(0, END)
+            else:
+                sql = 'SELECT * FROM Dados WHERE nome = ?'
+                for row in c.execute(sql, (name,)):
+                    print(row[0])
+                if row[0] == name:
+                    lb_result['text'] = "Ja Cadastrado!"
+                    lb_result['fg'] = 'red'
+                else:
+                    lb_result['text'] = "Cadastrado com Sucesso!"
+                    lb_result['fg'] = 'green'
+                    c.execute("INSERT INTO Dados(nome, numero) VALUES(?,?)", (name, num))
+                    con.commit()
+                    treeview.insert("", 0, text=name, values=num)
+                    et_name.delete(0, END)
+                    et_num.delete(0, END)
+
+"""
+
+
+
+
+
+
+
+
+
+
+
+
